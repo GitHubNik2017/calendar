@@ -1,0 +1,243 @@
+.header {
+  height: 120px;
+  width: auto;
+  border: 1px solid gainsboro;
+  background-color: whitesmoke;
+}
+
+.addDiv {
+  background-color: dodgerblue;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  margin: 0px 10px 0px 50px;
+  padding: 5px 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.addDiv2 {
+  background-color: dodgerblue;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.image {
+  top: 0px;
+  right: 260px;
+  width: 20px;
+  height: 23px;
+  background: url("lup.png") 100% 100% no-repeat;;
+  background-size: 20px, cover;
+  background-position: center;
+  position: absolute;
+}
+
+
+.block {
+  position: relative;
+  top: 75px;
+}
+
+.searchInput {
+  float: right;
+  margin: 0px 50px 0px 0px;
+  width: 200px;
+  height: 20px;
+}
+.addEvent {
+  position: absolute;
+  top: 117px;
+  width: 300px;
+  height: 90px;
+  margin: 0px 10px 0px 20px;
+  border: solid 1px gainsboro;
+  background-color:white;
+}
+.addDivEvent {
+  left: 15px;
+  top: 50px;
+  position: absolute;
+  background-color: white;
+  border-radius: 5px;
+  visibility: visible;
+}
+
+.inputEvent {
+  width: 250px;
+  position: absolute;
+  left: 15px;
+  top: 20px;
+}
+
+.addDivEvent2 {
+  border: none;
+  top: 5px;
+  right: 5px;
+  position:absolute;
+  background-color: white;
+}
+.triangle {
+  width: 20px;
+  height: 20px;
+  top: -11px;
+  left: 40px;
+  border-top: solid 1px  gainsboro;
+  border-left: solid 1px  gainsboro;
+  background-color:white;
+  position: absolute;
+  transform: rotate(45deg);
+}
+
+.triangle2 {
+  width: 20px;
+  height: 20px;
+  top: 107px;
+  left: -11px;
+  border-bottom: solid 1px  gainsboro;
+  border-left: solid 1px  gainsboro;
+  background-color:white;
+  position: absolute;
+  transform: rotate(45deg);
+}
+
+.addDivEventFull {
+  position: absolute;
+  top: 200px;
+  /*left: 400px;*/
+  width: 300px;
+  height: 300px;
+  margin: 0px 10px 0px 20px;
+  border: solid 1px gainsboro;
+  background-color:white;
+}
+
+.addDivEventFull1 {
+  border: none;
+  top: 5px;
+  right: 5px;
+  position:absolute;
+  background-color: white;
+}
+
+.addDivEventFull3 {
+  left: 95px;
+  top: 260px;
+  position: absolute;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.addDivEventFull2 {
+  left: 15px;
+  top: 260px;
+  position: absolute;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.inputEventFull1 {
+  width: 250px;
+  position: absolute;
+  left: 15px;
+  top: 20px;
+}
+
+.inputEventFull2 {
+  width: 250px;
+  position: absolute;
+  left: 15px;
+  top: 45px;
+}
+.inputEventFull3 {
+  width: 250px;
+  position: absolute;
+  left: 15px;
+  top: 70px;
+}
+
+.inputEventFull4 {
+  width: 250px;
+  height: 115px;
+  position: absolute;
+  left: 15px;
+  top: 125px;
+}
+
+.addDivTransition3 {
+  left: 160px;
+  position: absolute;
+  background-color: white;
+  border-radius: 5px;
+  margin: 0px 0px 0px 10px;
+}
+
+.addDivTransition2 {
+  left: 130px;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: url('1.png')  100% 100% no-repeat;
+  background-size: 7px, cover;
+  background-position: center;
+  margin: 0px 0px 0px 10px;
+  border-radius: 5px;
+}
+
+.addDivTransition1 {
+  width: 20px;
+  height: 20px;
+  background: url('1.png')  100% 100% no-repeat;
+  background-size: 7px, cover;
+  background-position: center;
+  margin: 0px 10px 0px 0px;
+  border-radius: 5px;
+  transform: rotate(180deg);
+}
+
+.addDivTransition {
+  z-index: -1;
+  top: 107px;
+  position: relative;
+  margin: 0px 0px 0px 50px;
+}
+
+.addCalendar {
+  top: 123px;
+  height: 1000px;
+  width: 1160px;
+  /*border: 1px solid gainsboro;*/
+  position: relative;
+  z-index: -1;
+  margin: 0px 50px 50px 50px;
+}
+.spanCss {
+  position: absolute;
+  top: 2px;
+  left: 20px;
+  width: 120px;
+  text-align: center;
+  font-weight: bold;
+}
+
+table {
+  width: 100%;
+  height: 100%;
+  border-collapse: collapse;
+}
+
+td,
+th {
+  border: 1px solid lightgray;
+  text-align: left;
+  valign: baseline;
+}
+
+th {
+  font-weight: bold;
+  background-color: #E6E6E6;
+}
