@@ -5,18 +5,12 @@
   background-color: whitesmoke;
 }
 
-.addDiv {
-  background-color: dodgerblue;
-  border: none;
-  border-radius: 3px;
-  color: white;
-  margin: 0px 10px 0px 50px;
-  padding: 5px 10px;
-  text-align: center;
-  font-size: 14px;
+/*-------------------header---------------------*/
+.block {
+  position: relative;
+  top: 75px;
 }
-
-.addDiv2 {
+.block_button {
   background-color: dodgerblue;
   border: none;
   border-radius: 3px;
@@ -25,9 +19,11 @@
   text-align: center;
   font-size: 14px;
 }
-
-.image {
-  top: 0px;
+.block_button_add {
+  margin: 0 10px 0 50px;
+}
+.search_icon {
+  top: 0;
   right: 260px;
   width: 20px;
   height: 23px;
@@ -36,67 +32,124 @@
   background-position: center;
   position: absolute;
 }
-
-
-.block {
-  position: relative;
-  top: 75px;
-}
-
-.searchInput {
+.search_input {
   float: right;
-  margin: 0px 50px 0px 0px;
+  margin: 0 50px 0 0;
   width: 200px;
   height: 20px;
 }
-.addEvent {
+
+/*--------------------------------transition--------------------------*/
+.transition {
+    z-index: -1;
+    top: 107px;
+    position: relative;
+    margin: 0 0 0 50px;
+}
+.transition_button {
+    height: 20px;
+    border-radius: 5px;
+}
+.transition_button_right {
+    left: 130px;
+    position: absolute;
+    width: 20px;
+    background: url('1.png')  100% 100% no-repeat;
+    background-size: 7px, cover;
+    background-position: center;
+    margin: 0 0 0 10px;
+}
+.spanCss {
+    position: absolute;
+    top: 2px;
+    left: 20px;
+    width: 120px;
+    text-align: center;
+    font-weight: bold;
+}
+.transition_button_left {
+    width: 20px;
+    background: url('1.png')  100% 100% no-repeat;
+    background-size: 7px, cover;
+    background-position: center;
+    transform: rotate(180deg);
+}
+.transition_button_to_day {
+    left: 160px;
+    position: absolute;
+    background-color: white;
+    margin: 0 0 0 10px;
+}
+
+/*------------------------short_window----------------------------*/
+.short_window {
   position: absolute;
   top: 117px;
   width: 300px;
   height: 90px;
-  margin: 0px 10px 0px 20px;
+  margin: 0 10px 0 20px;
   border: solid 1px gainsboro;
   background-color:white;
 }
-.addDivEvent {
-  left: 15px;
-  top: 50px;
+.triangle_short {
+    width: 20px;
+    height: 20px;
+    top: -11px;
+    left: 40px;
+    border-top: solid 1px  gainsboro;
+    border-left: solid 1px  gainsboro;
+    background-color:white;
+    position: absolute;
+    transform: rotate(45deg);
+}
+.button_close {
+    border: none;
+    top: 5px;
+    right: 5px;
+    position:absolute;
+    background-color: white;
+}
+
+.add_button {
   position: absolute;
   background-color: white;
   border-radius: 5px;
-  visibility: visible;
+}
+.add_button_event_short {
+    left: 15px;
+    top: 50px;
 }
 
-.inputEvent {
+.input_event_short {
   width: 250px;
   position: absolute;
   left: 15px;
   top: 20px;
 }
-
-.addDivEvent2 {
-  border: none;
-  top: 5px;
-  right: 5px;
-  position:absolute;
-  background-color: white;
-}
-.triangle {
-  width: 20px;
-  height: 20px;
-  top: -11px;
-  left: 40px;
-  border-top: solid 1px  gainsboro;
-  border-left: solid 1px  gainsboro;
-  background-color:white;
+/*------------------------full_window----------------------------*/
+.full_window {
   position: absolute;
-  transform: rotate(45deg);
+  top: 200px;
+  /*left: 400px;*/
+  width: 300px;
+  height: 300px;
+  margin: 0 10px 0 20px;
+  border: solid 1px gainsboro;
+  background-color:white;
+}
+.add_button_remove_event {
+    left: 95px;
+    top: 260px;
+}
+.add_button_event_full {
+    left: 15px;
+    top: 260px;
 }
 
-.triangle2 {
+.full_window_triangle_full{
   width: 20px;
   height: 20px;
-  top: 107px;
+  top: 25px;
   left: -11px;
   border-bottom: solid 1px  gainsboro;
   border-left: solid 1px  gainsboro;
@@ -104,125 +157,51 @@
   position: absolute;
   transform: rotate(45deg);
 }
-
-.addDivEventFull {
-  position: absolute;
-  top: 200px;
-  /*left: 400px;*/
-  width: 300px;
-  height: 300px;
-  margin: 0px 10px 0px 20px;
-  border: solid 1px gainsboro;
-  background-color:white;
+.full_window_triangle_full--bottom{
+  top: 250px;
 }
-
-.addDivEventFull1 {
-  border: none;
-  top: 5px;
-  right: 5px;
-  position:absolute;
-  background-color: white;
+.full_window_triangle_full--right{
+    top: 25px;
+    transform: rotate(225deg);
+    left: 290px;
 }
-
-.addDivEventFull3 {
-  left: 95px;
-  top: 260px;
-  position: absolute;
-  background-color: white;
-  border-radius: 5px;
+.full_window_triangle_full--bottom_right{
+    top: 250px;
+    transform: rotate(225deg);
+    left: 290px;
 }
-
-.addDivEventFull2 {
-  left: 15px;
-  top: 260px;
-  position: absolute;
-  background-color: white;
-  border-radius: 5px;
+.input_event_full {
+    width: 250px;
+    position: absolute;
 }
-
-.inputEventFull1 {
-  width: 250px;
-  position: absolute;
+.input_event_full_title {
   left: 15px;
   top: 20px;
 }
-
-.inputEventFull2 {
-  width: 250px;
-  position: absolute;
+.input_event_full_date {
   left: 15px;
   top: 45px;
 }
-.inputEventFull3 {
-  width: 250px;
-  position: absolute;
+.input_event_full_group {
   left: 15px;
   top: 70px;
 }
-
-.inputEventFull4 {
-  width: 250px;
+.input_event_full_description {
   height: 115px;
-  position: absolute;
   left: 15px;
   top: 125px;
 }
-
-.addDivTransition3 {
-  left: 160px;
-  position: absolute;
-  background-color: white;
-  border-radius: 5px;
-  margin: 0px 0px 0px 10px;
-}
-
-.addDivTransition2 {
-  left: 130px;
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background: url('1.png')  100% 100% no-repeat;
-  background-size: 7px, cover;
-  background-position: center;
-  margin: 0px 0px 0px 10px;
-  border-radius: 5px;
-}
-
-.addDivTransition1 {
-  width: 20px;
-  height: 20px;
-  background: url('1.png')  100% 100% no-repeat;
-  background-size: 7px, cover;
-  background-position: center;
-  margin: 0px 10px 0px 0px;
-  border-radius: 5px;
-  transform: rotate(180deg);
-}
-
-.addDivTransition {
-  z-index: -1;
-  top: 107px;
-  position: relative;
-  margin: 0px 0px 0px 50px;
-}
-
-.addCalendar {
+/*---------------------------------calendar----------------------------------------*/
+.calendar {
   top: 123px;
   height: 1000px;
   width: 1160px;
   /*border: 1px solid gainsboro;*/
   position: relative;
   z-index: -1;
-  margin: 0px 50px 50px 50px;
+  margin: 0 50px 50px 50px;
 }
-.spanCss {
-  position: absolute;
-  top: 2px;
-  left: 20px;
-  width: 120px;
-  text-align: center;
-  font-weight: bold;
-}
+
 
 table {
   width: 100%;
@@ -234,10 +213,24 @@ td,
 th {
   border: 1px solid lightgray;
   text-align: left;
-  valign: baseline;
+/*  valign: baseline;*/
 }
 
 th {
   font-weight: bold;
   background-color: #E6E6E6;
+}
+.cell {
+    width: 160px;
+    height: 100%;
+    z-index: -1;
+
+}
+.clip {
+    white-space: nowrap; /* Запрещаем перенос строк */
+    overflow: hidden; /* Обрезаем все, что не помещается в область */
+    background: lightskyblue;
+    padding: 5px; /* Поля вокруг текста */
+    text-overflow: ellipsis; /* Добавляем многоточие */
+    z-index: -1;
 }

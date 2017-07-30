@@ -9,16 +9,14 @@ class AddEvent extends Component {
         //console.log(this.props.aa)
 
         return (
-        <div className="addEvent">
-            <div className="triangle"></div>
-            <button onClick = {this.props.getWindow} className="addDivEvent2">х</button>
-            <button className="addDivEvent" onClick={()=>this.props.setEvent(this.input.value)}>Создать</button>
-            <InputElement className="inputEvent"
+        <div className="short_window">
+            <div className="triangle triangle_short"/>
+            <button onClick = {this.props.getWindow} className="button_close short">х</button>
+            <button className="add_button add_button_event_short" onClick={()=>this.props.setEvent(this.input.value)}>Создать</button>
+            <InputElement className="input_event_short"
                    ref={(input) => this.input = input}
                    placeholder="ДД.ММ.ГГГГ"
-                   mask="99.99.9999"
-                   >
-            </InputElement>
+                   mask="99.99.9999"/>
         </div>
         )}
 }

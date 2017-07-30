@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css'
+//import './style.sass'
 
 import Menu from './Menu'
 import AddEvent from './addEvent'
@@ -9,18 +10,11 @@ import Transition from './Transition'
 
 //App
 class App extends Component {
-    render(){
-        return <Header/>
-    }
-}
-
-//Header
-class Header extends Component {
 
     constructor(props){
         super(props);
 
-        this.state = {window: false, windowFull: false, date: new Date(), windowSate: ''};
+        this.state = {window: false, window_full: false, date: new Date(), windowState: null, modalStyle: null};
         this.getWindow = this.getWindow.bind(this);
         this.setToUpdate = this.setToUpdate.bind(this);
         this.createCalendar = this.createCalendar.bind(this);
@@ -37,36 +31,71 @@ class Header extends Component {
     }
 
     getWindow(e) {
+
         //console.log(e.currentTarget.className)
         e.preventDefault();
         //let target = e.target;
         //console.log(target.getBoundingClientRect());
 
-        if (e.currentTarget.className === 'addDiv' || e.currentTarget.className === 'addDivEvent2') {
+        if (e.currentTarget.className === 'block_button block_button_add' || e.currentTarget.className === 'button_close short') {
             this.setState({
-                window: !this.state.window, windowfull: false
+                window: !this.state.window, window_full: false
             })
-        } else if(e.currentTarget.className === 'addCalendar' || e.currentTarget.className === 'addDivEventFull1') {
+        } else if(e.currentTarget.className === 'calendar' || e.currentTarget.className === 'button_close full') {
             this.setState({
-                windowfull: !this.state.windowfull, window: false
+                window_full: !this.state.window_full, window: false
             })
         }
-        //console.log(e.target.nextSibling);
-        //console.log(e.target.parentElement.nextSibling);
-    }
+
+        //console.log(e.target.parentElement.parentElement.nextSibling);
+
+         if (!e.target.parentElement.parentElement.nextSibling && !e.target.parentElement.nextSibling){
+            this.setState({
+                windowState: '--bottom_right'
+            })
+        }  else if (!e.target.parentElement.parentElement.nextSibling
+             && e.target.parentElement.nextSibling){
+            this.setState({
+                windowState: '--bottom'
+            })
+        }
+         else if (e.target.parentElement.parentElement.nextSibling
+             && !e.target.parentElement.nextSibling){
+             this.setState({
+                 windowState: '--right'
+             })
+         }
+        else {
+            this.setState({
+                windowState: '',
+                modalStyle: {
+                    position: 'absolute',
+                    top: 155 + e.target.parentElement.offsetTop,
+                    left: 46 + e.target.parentElement.offsetLeft + e.target.parentElement.clientWidth
+                }
+            })
+        }
+        console.log(e.target.parentElement.offsetLeft);
+        console.log(e.target.parentElement.offsetTop);
+        console.log(e.target.parentElement.clientHeight);
+        console.log(e.target.parentElement.clientWidth);
+        debugger
+     }
 
     getNextDate(e){
         e.preventDefault();
         this.setState({
-            date: this.month(1)
-        });
+            date: this.month(1),
+            window_full: false
+           });
     }
 
     getPreviousDate(e){
         e.preventDefault();
         this.setState({
-            date: this.month(0)
-        });
+            date: this.month(0),
+            window_full: false
+          });
     }
 
     month(el) {
@@ -83,11 +112,12 @@ class Header extends Component {
         let date = new Date();
         e.preventDefault();
         this.setState({
-            date: date
+            date: date,
+            window_full: false
         });
     }
 
-    createCalendar (year, month, events) {
+    createCalendar (year, month) {
 
 
         const weeks = ['понедельник','вторник','среда','четверг','пятница', 'суббота', 'воскресенье'];
@@ -99,13 +129,11 @@ class Header extends Component {
         let d = new Date(year, mon);
         let d0 = this.getLastDayOfMonth (year, mon);
 
-
-        // заполнить первый ряд от понедельника
+         // заполнить первый ряд от понедельника
         // и до дня, с которого начинается месяц
         // * * * | 1  2  3  4
         let firstDay = this.getDay(d);
 
-        //debugger
         for (let i = 1; i <= firstDay; i++) {
             let a = d0-(firstDay-i);
             arr.push({
@@ -117,7 +145,6 @@ class Header extends Component {
             })
         }
 
-        //debugger
         // ячейки календаря с датами
         while (d.getMonth() === mon) {
             let a = d.getDate();
@@ -132,10 +159,11 @@ class Header extends Component {
             d.setDate(a + 1);
         }
 
-
-        let test = 8 - this.getDay(d);
+        //debugger
+        //let test = 8 - this.getDay(d);
+        let test = 43 - arr.length;
         // добить таблицу пустыми ячейками, если нужно
-        if (this.getDay(d) !== 0) {
+        if (this.getDay(d) !== 0 || arr.length !== 43) {
            for (let i = 1; i < test; i++) {
                let a = i;
 
@@ -149,18 +177,20 @@ class Header extends Component {
             }
         }
 
+
         let result = this.spl(arr, 7);
 
         for (var i = 0; i < result[0].length; i++) {
-            result[0][i].day = result[0][i].day+' '+weeks[i]
+            result[0][i].day = weeks[i]+', '+result[0][i].day
         }
 
         return result
 
+
     }
 
     getDateToMonth ( day, month, year ){
-        if(month < 10) month = '0'+month
+        if(month < 10) month = '0'+month;
         return day+'.'+month+'.'+year
     }
 
@@ -184,14 +214,19 @@ class Header extends Component {
         return date.getDate();
     }
 
-    setToUpdate(e) {
+    setToUpdate() {
         alert('обновление')
     }
 
     setEvent(){
-        console.log(arguments)
-        debugger
-        if ( arguments.length > 1 ){
+        //console.log(arguments)
+        debugger;
+
+        if (arguments[0] === "") {
+
+            alert("Введите дату")
+
+        } else if ( arguments.length > 1 ){
 
         } else {
 
@@ -203,7 +238,7 @@ class Header extends Component {
                 this.setState({
                     date: date,
                     window: false,
-                    windowfull: true
+                    window_full: true
                 });
             }
         }
@@ -211,7 +246,7 @@ class Header extends Component {
 
     render(){
 
-        debugger
+        //debugger
         let nowMonth = this.state.date.getMonth();
         let nowYear = this.state.date.getFullYear();
 
@@ -220,43 +255,52 @@ class Header extends Component {
 
         localStorage.setItem("myKey", json);
 
-        const locStore = JSON.parse(localStorage.getItem("myKey"));
+        let locStore = JSON.parse(localStorage.getItem("myKey"));
 
-        const weeks = this.createCalendar(nowYear, nowMonth, locStore);
-
-        const modalStyle = {
-            position: 'absolute',
-            top: 320,
-            left: 300
-        };
+        const weeks = this.createCalendar(nowYear, nowMonth);
 
         //console.log(Events)
         localStorage.clear();
 
         return (
-        <div className = "header">
-            {<Menu getWindow = {this.getWindow} setToUpdate = {this.setToUpdate} />}
-            {this.state.windowfull && <AddEventFull getWindow = {this.getWindow} setEvent = {this.setEvent} style = {modalStyle} widowState = {this.state.windowSate}/>}
-            <Transition toDay = {this.getToday} date = {this.state.date} month = {nowMonth} year = {nowYear} NextDate = {this.getNextDate} PreviousDate = {this.getPreviousDate}/>
-           {/* <addWindowFullEvent getWindow = {this.getWindow}/>*/}
-            {this.state.window && <AddEvent getWindow = {this.getWindow} setEvent = {this.setEvent}/>}
-            <div onClick = {this.getWindow} className="addCalendar">
-                <table>
-                    <tbody>
-                    {weeks.map((week, index) => {
-                        return (
-                            <tr key={index}>
-                                {week.map((day, index) => {
-                                    return <td key={index}><div>{day.day}</div></td>
-                                })}
-                            </tr>
-                        )
-                    })}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    )}
+                <div className = "header">
+                    {<Menu getWindow = {this.getWindow} setToUpdate = {this.setToUpdate} />}
+                    {this.state.window_full && <AddEventFull
+                        getWindow = {this.getWindow}
+                        setEvent = {this.setEvent}
+                        style = {this.state.modalStyle}
+                        windowState = {this.state.windowState}/>}
+                    <Transition
+                        toDay = {this.getToday}
+                        date = {this.state.date}
+                        month = {nowMonth}
+                        year = {nowYear}
+                        NextDate = {this.getNextDate}
+                        PreviousDate = {this.getPreviousDate}/>
+                   {/* <addWindowFullEvent getWindow = {this.getWindow}/>*/}
+                    {this.state.window && <AddEvent
+                        getWindow = {this.getWindow} setEvent = {this.setEvent}/>}
+                    <div onClick = {this.getWindow} className="calendar">
+                        <table>
+                            <tbody>
+                            {weeks.map((week, index) => {
+                                return (
+                                    <tr key={index}>
+                                        {week.map((day, index) => {
+                                            return <td key={index}>
+                                                        <div className="cell">
+                                                            <p className="clip">{day.day}</p>
+                                                        </div>
+                                                   </td>
+                                        })}
+                                    </tr>
+                                )
+                            })}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+        )}
 }
 
 export default App;
