@@ -36,31 +36,31 @@ class App extends Component {
         e.preventDefault();
         //let target = e.target;
         //console.log(target.getBoundingClientRect());
-
+        debugger;
         if (e.currentTarget.className === 'block_button block_button_add' || e.currentTarget.className === 'button_close short') {
             this.setState({
                 window: !this.state.window, window_full: false
             })
-        } else if(e.currentTarget.className === 'calendar' || e.currentTarget.className === 'button_close full') {
+        } else if(e.currentTarget.className === 'test1' || e.currentTarget.className === 'button_close full') {
             this.setState({
                 window_full: !this.state.window_full, window: false
             })
         }
 
         //console.log(e.target.parentElement.parentElement.nextSibling);
-
-         if (!e.target.parentElement.parentElement.nextSibling && !e.target.parentElement.nextSibling){
+         debugger;
+         if (!e.currentTarget.parentElement.nextSibling && !e.currentTarget.nextSibling){
             this.setState({
                 windowState: '--bottom_right'
             })
-        }  else if (!e.target.parentElement.parentElement.nextSibling
-             && e.target.parentElement.nextSibling){
+        }  else if (!e.currentTarget.parentElement.nextSibling
+             && e.currentTarget.nextSibling){
             this.setState({
                 windowState: '--bottom'
             })
         }
-         else if (e.target.parentElement.parentElement.nextSibling
-             && !e.target.parentElement.nextSibling){
+         else if (e.currentTarget.parentElement.nextSibling
+             && !e.currentTarget.nextSibling){
              this.setState({
                  windowState: '--right'
              })
@@ -70,15 +70,15 @@ class App extends Component {
                 windowState: '',
                 modalStyle: {
                     position: 'absolute',
-                    top: 155 + e.target.parentElement.offsetTop,
-                    left: 46 + e.target.parentElement.offsetLeft + e.target.parentElement.clientWidth
+                    top: 155 + e.currentTarget.offsetTop,
+                    left: 46 + e.currentTarget.offsetLeft + e.currentTarget.clientWidth
                 }
             })
         }
-        console.log(e.target.parentElement.offsetLeft);
-        console.log(e.target.parentElement.offsetTop);
-        console.log(e.target.parentElement.clientHeight);
-        console.log(e.target.parentElement.clientWidth);
+        console.log(e.currentTarget.parentElement.offsetLeft);
+        console.log(e.currentTarget.parentElement.offsetTop);
+        console.log(e.currentTarget.parentElement.clientHeight);
+        console.log(e.currentTarget.parentElement.clientWidth);
         debugger
      }
 
@@ -280,14 +280,14 @@ class App extends Component {
                    {/* <addWindowFullEvent getWindow = {this.getWindow}/>*/}
                     {this.state.window && <AddEvent
                         getWindow = {this.getWindow} setEvent = {this.setEvent}/>}
-                    <div onClick = {this.getWindow} className="calendar">
+                    <div className="calendar">
                         <table>
                             <tbody>
                             {weeks.map((week, index) => {
                                 return (
                                     <tr key={index}>
                                         {week.map((day, index) => {
-                                            return <td key={index}>
+                                            return <td key={index} onClick = {this.getWindow} className="test1">
                                                         <div className="cell">
                                                             <p className="clip">{day.day}</p>
                                                         </div>
