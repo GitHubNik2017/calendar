@@ -174,11 +174,11 @@
     width: 250px;
     position: absolute;
 }
-.input_event_full_title {
-  left: 15px;
-  top: 20px;
-}
 .input_event_full_date {
+    left: 15px;
+    top: 20px;
+}
+.input_event_full_title {
   left: 15px;
   top: 45px;
 }
@@ -232,5 +232,18 @@ th {
     background: lightskyblue;
     padding: 5px; /* Поля вокруг текста */
     text-overflow: ellipsis; /* Добавляем многоточие */
-    z-index: -1;
 }
+.clip_title {
+    white-space: nowrap; /* Запрещаем перенос строк */
+    overflow: hidden; /* Обрезаем все, что не помещается в область */
+    padding: 5px; /* Поля вокруг текста */
+    text-overflow: ellipsis; /* Добавляем многоточие */
+}
+
+.clip_group {
+    white-space: nowrap; /* Запрещаем перенос строк */
+    overflow: hidden; /* Обрезаем все, что не помещается в область */
+    padding: 5px; /* Поля вокруг текста */
+    text-overflow: ellipsis; /* Добавляем многоточие */
+}
+

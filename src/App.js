@@ -14,7 +14,7 @@ class App extends Component {
     constructor(props){
         super(props);
 
-        this.state = {window: false, window_full: false, date: new Date(), windowState: null, modalStyle: null};
+        this.state = {window: false, window_full: false, date: new Date(), windowState: null, modalStyle: null, day: null};
         this.getWindow = this.getWindow.bind(this);
         this.setToUpdate = this.setToUpdate.bind(this);
         this.createCalendar = this.createCalendar.bind(this);
@@ -36,7 +36,7 @@ class App extends Component {
         e.preventDefault();
         //let target = e.target;
         //console.log(target.getBoundingClientRect());
-        debugger;
+        //debugger;
         if (e.currentTarget.className === 'block_button block_button_add' || e.currentTarget.className === 'button_close short') {
             this.setState({
                 window: !this.state.window, window_full: false
@@ -48,21 +48,36 @@ class App extends Component {
         }
 
         //console.log(e.target.parentElement.parentElement.nextSibling);
-         debugger;
+         //debugger;
          if (!e.currentTarget.parentElement.nextSibling && !e.currentTarget.nextSibling){
             this.setState({
-                windowState: '--bottom_right'
+                windowState: '--bottom_right',
+                modalStyle: {
+                    position: 'absolute',
+                    top: e.currentTarget.offsetTop,
+                    left: 709
+                }
             })
         }  else if (!e.currentTarget.parentElement.nextSibling
              && e.currentTarget.nextSibling){
             this.setState({
-                windowState: '--bottom'
+                windowState: '--bottom',
+                modalStyle: {
+                    position: 'absolute',
+                    top: e.currentTarget.offsetTop,
+                    left: 46 + e.currentTarget.offsetLeft + e.currentTarget.clientWidth
+                }
             })
         }
          else if (e.currentTarget.parentElement.nextSibling
-             && !e.currentTarget.nextSibling){
+             && !e.currentTarget.nextSibling || !e.currentTarget.nextSibling.nextSibling){
              this.setState({
-                 windowState: '--right'
+                 windowState: '--right',
+                 modalStyle: {
+                     position: 'absolute',
+                     top: 155 + e.currentTarget.offsetTop,
+                     left: 46 + e.currentTarget.offsetLeft - (e.currentTarget.clientWidth*2)
+                 }
              })
          }
         else {
@@ -75,11 +90,17 @@ class App extends Component {
                 }
             })
         }
-        console.log(e.currentTarget.parentElement.offsetLeft);
+
+        this.setState({
+                day: e.currentTarget.textContent
+        });
+
+/*        console.log(e.currentTarget.parentElement.offsetLeft);
         console.log(e.currentTarget.parentElement.offsetTop);
         console.log(e.currentTarget.parentElement.clientHeight);
-        console.log(e.currentTarget.parentElement.clientWidth);
-        debugger
+        console.log(e.currentTarget.parentElement.clientWidth);*/
+
+        //debugger
      }
 
     getNextDate(e){
@@ -119,7 +140,6 @@ class App extends Component {
 
     createCalendar (year, month) {
 
-
         const weeks = ['понедельник','вторник','среда','четверг','пятница', 'суббота', 'воскресенье'];
 
         const arr = [];
@@ -136,10 +156,11 @@ class App extends Component {
 
         for (let i = 1; i <= firstDay; i++) {
             let a = d0-(firstDay-i);
+            debugger;
             arr.push({
                 day: a,
                 date: this.getDateToMonth(a, mon, year),
-                event: '',//localStorageEvents[days.date] || {}
+                event: JSON.parse(localStorage[a] || '{}'),
                 month: mon,
                 year: year
             })
@@ -152,7 +173,7 @@ class App extends Component {
             arr.push({
                 day: a,
                 date: this.getDateToMonth(a, mon + 1, year),
-                event: '',//localStorageEvents[days.date] || {}
+                event: JSON.parse(localStorage[a] || '{}'),
                 month: mon + 1,
                 year: year
             });
@@ -170,7 +191,7 @@ class App extends Component {
                arr.push({
                    day: a,
                    date: this.getDateToMonth(a, mon + 2, year),
-                   event: '',//localStorageEvents[days.date] || {}
+                   event: JSON.parse(localStorage[a] || '{}'),
                    month: mon + 2,
                    year: year
                })
@@ -183,7 +204,7 @@ class App extends Component {
         for (var i = 0; i < result[0].length; i++) {
             result[0][i].day = weeks[i]+', '+result[0][i].day
         }
-
+        //console.log(result)
         return result
 
 
@@ -215,30 +236,39 @@ class App extends Component {
     }
 
     setToUpdate() {
-        alert('обновление')
+        alert('обновление');
+        localStorage.clear();
     }
 
     setEvent(){
         //console.log(arguments)
-        debugger;
+        //debugger;
 
-        if (arguments[0] === "") {
+        if ( arguments.length > 1 ){
 
-            alert("Введите дату")
+            const json = JSON.stringify({
+                title: arguments[1],
+                group: arguments[2],
+                description: arguments[3],
+            });
 
-        } else if ( arguments.length > 1 ){
+            localStorage.setItem(arguments[0], json);
 
         } else {
+            if (arguments[0] === "") {
 
-            if (new Date(arguments[0]) === 'Invalid Date') {
+                alert("Введите дату")
+
+            }
+            else if (new Date(arguments[0]) === 'Invalid Date') {
                 alert('Дата не валидна')
             } else {
                 let args = arguments[0].split('.');
                 let date = new Date(args[2], args[1]-1, args[0]);
                 this.setState({
                     date: date,
-                    window: false,
-                    window_full: true
+                    window: false
+                    //window_full: true
                 });
             }
         }
@@ -246,21 +276,11 @@ class App extends Component {
 
     render(){
 
-        //debugger
+        //debugger;
         let nowMonth = this.state.date.getMonth();
         let nowYear = this.state.date.getFullYear();
 
-        const Events = 'we';
-        const json = JSON.stringify(Events);
-
-        localStorage.setItem("myKey", json);
-
-        let locStore = JSON.parse(localStorage.getItem("myKey"));
-
         const weeks = this.createCalendar(nowYear, nowMonth);
-
-        //console.log(Events)
-        localStorage.clear();
 
         return (
                 <div className = "header">
@@ -269,7 +289,9 @@ class App extends Component {
                         getWindow = {this.getWindow}
                         setEvent = {this.setEvent}
                         style = {this.state.modalStyle}
-                        windowState = {this.state.windowState}/>}
+                        windowState = {this.state.windowState}
+                        month = {nowMonth}
+                        day = {this.state.day}/>}
                     <Transition
                         toDay = {this.getToday}
                         date = {this.state.date}
@@ -290,6 +312,8 @@ class App extends Component {
                                             return <td key={index} onClick = {this.getWindow} className="test1">
                                                         <div className="cell">
                                                             <p className="clip">{day.day}</p>
+                                                            <p className="clip_title">{day.event.title || null}</p>
+                                                            <p className="clip_group">{day.event.group || null}</p>
                                                         </div>
                                                    </td>
                                         })}
