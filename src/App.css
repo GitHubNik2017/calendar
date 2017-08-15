@@ -170,6 +170,11 @@
     transform: rotate(225deg);
     left: 290px;
 }
+.full_window_triangle_full--bottom_previous_right{
+    top: 250px;
+    transform: rotate(225deg);
+    left: 290px;
+}
 .input_event_full {
     width: 250px;
     position: absolute;

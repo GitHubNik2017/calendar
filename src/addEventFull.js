@@ -1,36 +1,90 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 
 //addButton
 class AddEventFull extends Component {
 
-    render(){
+    constructor(props) {
+        super(props);
+        if (!localStorage[this.props.day]) {
+            this.state = {
+                title: '',
+                group: '',
+                description: ''
+            }
+        } else {
+            this.state = {
+                title: JSON.parse(localStorage[this.props.day]).title,
+                group: JSON.parse(localStorage[this.props.day]).group,
+                description: JSON.parse(localStorage[this.props.day]).description
+            }
+        }
 
-        var month = ["Января", "Февраля", "Марта", "Апреля", "Мая", "Июня",
+        this.writeEvent = this.writeEvent.bind(this);
+        this.clearForm = this.clearForm.bind(this)
+    }
+
+    writeEvent(e) {
+
+        if (e.currentTarget.className === 'input_event_full input_event_full_title') {
+            this.setState({
+                title: e.target.value,
+            })
+        } else if (e.currentTarget.className === 'input_event_full input_event_full_group') {
+            this.setState({
+                group: e.target.value,
+            })
+        } else if (e.currentTarget.className === 'input_event_full input_event_full_description') {
+            this.setState({
+                description: e.target.value
+            })
+        }
+
+    }
+    clearForm(){
+        this.setState({
+            title: '',
+            group: '',
+            description: ''
+        })
+    }
+
+    render() {
+
+        let month = ["Января", "Февраля", "Марта", "Апреля", "Мая", "Июня",
             "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"];
+
+        let currentDay = this.props.day.split('.')[0];
+        let currentMonth = (this.props.day.split('.')[1].charAt(0) == 0) ? (this.props.day.split('.')[1].charAt(1) - 1) : (this.props.day.split('.')[1] - 1);
+
+        //console.log(localStorage);
 
         return (
             <div className="full_window" style={this.props.style}>
-                <button onClick = {this.props.getWindow} className = "button_close full">х</button>
+                <button onClick={this.props.getWindow} className="button_close full">х</button>
                 <button
-                    className = "add_button add_button_event_full"
-                    onClick={() => this.props.setEvent( this.props.day, this.input.value, this.input2.value, this.input3.value )}>Готово</button>
-                <button className = "add_button add_button_remove_event">Удалить</button>
-                <div className = "input_event_full input_event_full_date">{this.props.day} {month[this.props.month]}</div>
+                    className="add_button add_button_event_full"
+                    onClick={() => this.props.setEvent(this.props.day, this.state.title, this.state.group, this.state.description)}>Готово</button>
+                <button className="add_button add_button_remove_event" onClick={this.clearForm}>Удалить</button>
+                <div className="input_event_full input_event_full_date">{currentDay} {month[currentMonth]}</div>
                 <input
-                    className = "input_event_full input_event_full_title"
+                    className="input_event_full input_event_full_title"
                     placeholder="Событие"
-                    ref={(input) => this.input = input}/>
+                    onChange={this.writeEvent}
+                    value={this.state.title}/>
                 <input
-                    className = "input_event_full input_event_full_group"
+                    className="input_event_full input_event_full_group"
                     placeholder="Имена участников"
-                    ref={(input) => this.input2 = input}/>
+                    onChange={this.writeEvent}
+                    value={this.state.group}/>
                 <textarea
-                    className = "input_event_full input_event_full_description"
+                    className="input_event_full input_event_full_description"
                     placeholder="Описание"
-                    ref={(input) => this.input3 = input}/>
+                    onChange={this.writeEvent}
+                    value={this.state.description}/>
                 <div className={'full_window_triangle_full full_window_triangle_full' + this.props.windowState}/>
             </div>
-        )}
+        )
+    }
 }
 
 export default AddEventFull

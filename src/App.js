@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './App.css'
 //import './style.sass'
 
@@ -11,10 +11,17 @@ import Transition from './Transition'
 //App
 class App extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
-        this.state = {window: false, window_full: false, date: new Date(), windowState: null, modalStyle: null, day: null};
+        this.state = {
+            window: false,
+            window_full: false,
+            date: new Date(),
+            windowState: null,
+            modalStyle: null,
+            day: null
+        };
         this.getWindow = this.getWindow.bind(this);
         this.setToUpdate = this.setToUpdate.bind(this);
         this.createCalendar = this.createCalendar.bind(this);
@@ -30,26 +37,32 @@ class App extends Component {
 
     }
 
-    getWindow(e) {
+    getWindow(e, date) {
 
-        //console.log(e.currentTarget.className)
         e.preventDefault();
-        //let target = e.target;
-        //console.log(target.getBoundingClientRect());
-        //debugger;
+
+        debugger;
         if (e.currentTarget.className === 'block_button block_button_add' || e.currentTarget.className === 'button_close short') {
             this.setState({
                 window: !this.state.window, window_full: false
             })
-        } else if(e.currentTarget.className === 'test1' || e.currentTarget.className === 'button_close full') {
+        } else if (e.currentTarget.className === 'test1' || e.currentTarget.className === 'button_close full') {
             this.setState({
                 window_full: !this.state.window_full, window: false
             })
         }
 
-        //console.log(e.target.parentElement.parentElement.nextSibling);
-         //debugger;
-         if (!e.currentTarget.parentElement.nextSibling && !e.currentTarget.nextSibling){
+
+        if (!e.currentTarget.parentElement.nextSibling && e.currentTarget.cellIndex == 5) {
+            this.setState({
+                windowState: '--bottom_previous_right',
+                modalStyle: {
+                    position: 'absolute',
+                    top: e.currentTarget.offsetTop,
+                    left: 46 + e.currentTarget.offsetLeft - (e.currentTarget.clientWidth * 2)
+                }
+            })
+        } else if (!e.currentTarget.parentElement.nextSibling && e.currentTarget.cellIndex == 6) {
             this.setState({
                 windowState: '--bottom_right',
                 modalStyle: {
@@ -58,8 +71,8 @@ class App extends Component {
                     left: 709
                 }
             })
-        }  else if (!e.currentTarget.parentElement.nextSibling
-             && e.currentTarget.nextSibling){
+        } else if (!e.currentTarget.parentElement.nextSibling
+            && e.currentTarget.nextSibling) {
             this.setState({
                 windowState: '--bottom',
                 modalStyle: {
@@ -69,17 +82,17 @@ class App extends Component {
                 }
             })
         }
-         else if (e.currentTarget.parentElement.nextSibling
-             && !e.currentTarget.nextSibling || !e.currentTarget.nextSibling.nextSibling){
-             this.setState({
-                 windowState: '--right',
-                 modalStyle: {
-                     position: 'absolute',
-                     top: 155 + e.currentTarget.offsetTop,
-                     left: 46 + e.currentTarget.offsetLeft - (e.currentTarget.clientWidth*2)
-                 }
-             })
-         }
+        else if (e.currentTarget.parentElement.nextSibling
+            && !e.currentTarget.nextSibling || !e.currentTarget.nextSibling.nextSibling) {
+            this.setState({
+                windowState: '--right',
+                modalStyle: {
+                    position: 'absolute',
+                    top: 155 + e.currentTarget.offsetTop,
+                    left: 46 + e.currentTarget.offsetLeft - (e.currentTarget.clientWidth * 2)
+                }
+            })
+        }
         else {
             this.setState({
                 windowState: '',
@@ -91,45 +104,38 @@ class App extends Component {
             })
         }
 
-        this.setState({
-                day: e.currentTarget.textContent
-        });
-
-/*        console.log(e.currentTarget.parentElement.offsetLeft);
-        console.log(e.currentTarget.parentElement.offsetTop);
-        console.log(e.currentTarget.parentElement.clientHeight);
-        console.log(e.currentTarget.parentElement.clientWidth);*/
+        this.setState({day: date});
 
         //debugger
-     }
+    }
 
-    getNextDate(e){
+    getNextDate(e) {
         e.preventDefault();
         this.setState({
             date: this.month(1),
             window_full: false
-           });
+        });
     }
 
-    getPreviousDate(e){
+    getPreviousDate(e) {
         e.preventDefault();
         this.setState({
             date: this.month(0),
             window_full: false
-          });
+        });
     }
 
     month(el) {
         var D = this.state.date;
-        if(el === 1) {
+        if (el === 1) {
             D.setMonth(D.getMonth() + 1);
         } else {
             D.setMonth(D.getMonth() - 1);
         }
         return D
-     }
+    }
 
-    getToday(e){
+    getToday(e) {
         let date = new Date();
         e.preventDefault();
         this.setState({
@@ -138,29 +144,29 @@ class App extends Component {
         });
     }
 
-    createCalendar (year, month) {
+    createCalendar(year, month) {
 
-        const weeks = ['понедельник','вторник','среда','четверг','пятница', 'суббота', 'воскресенье'];
+        const weeks = ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье'];
 
         const arr = [];
 
 
         let mon = month; // месяцы в JS идут от 0 до 11, а не от 1 до 12
         let d = new Date(year, mon);
-        let d0 = this.getLastDayOfMonth (year, mon);
+        let d0 = this.getLastDayOfMonth(year, mon);
 
-         // заполнить первый ряд от понедельника
+        // заполнить первый ряд от понедельника
         // и до дня, с которого начинается месяц
         // * * * | 1  2  3  4
         let firstDay = this.getDay(d);
 
         for (let i = 1; i <= firstDay; i++) {
-            let a = d0-(firstDay-i);
-            debugger;
+            let a = d0 - (firstDay - i);
+            //debugger;
             arr.push({
                 day: a,
                 date: this.getDateToMonth(a, mon, year),
-                event: JSON.parse(localStorage[a] || '{}'),
+                event: JSON.parse(localStorage[this.getDateToMonth(a, mon, year)] || '{}'),
                 month: mon,
                 year: year
             })
@@ -168,16 +174,16 @@ class App extends Component {
 
         // ячейки календаря с датами
         while (d.getMonth() === mon) {
-            let a = d.getDate();
+            let b = d.getDate();
 
             arr.push({
-                day: a,
-                date: this.getDateToMonth(a, mon + 1, year),
-                event: JSON.parse(localStorage[a] || '{}'),
+                day: b,
+                date: this.getDateToMonth(b, mon + 1, year),
+                event: JSON.parse(localStorage[this.getDateToMonth(b, mon + 1, year)] || '{}'),
                 month: mon + 1,
                 year: year
             });
-            d.setDate(a + 1);
+            d.setDate(b + 1);
         }
 
         //debugger
@@ -185,16 +191,16 @@ class App extends Component {
         let test = 43 - arr.length;
         // добить таблицу пустыми ячейками, если нужно
         if (this.getDay(d) !== 0 || arr.length !== 43) {
-           for (let i = 1; i < test; i++) {
-               let a = i;
+            for (let i = 1; i < test; i++) {
+                let c = i;
 
-               arr.push({
-                   day: a,
-                   date: this.getDateToMonth(a, mon + 2, year),
-                   event: JSON.parse(localStorage[a] || '{}'),
-                   month: mon + 2,
-                   year: year
-               })
+                arr.push({
+                    day: c,
+                    date: this.getDateToMonth(c, mon + 2, year),
+                    event: JSON.parse(localStorage[this.getDateToMonth(c, mon + 2, year)] || '{}'),
+                    month: mon + 2,
+                    year: year
+                })
             }
         }
 
@@ -202,7 +208,7 @@ class App extends Component {
         let result = this.spl(arr, 7);
 
         for (var i = 0; i < result[0].length; i++) {
-            result[0][i].day = weeks[i]+', '+result[0][i].day
+            result[0][i].day = weeks[i] + ', ' + result[0][i].day
         }
         //console.log(result)
         return result
@@ -210,16 +216,16 @@ class App extends Component {
 
     }
 
-    getDateToMonth ( day, month, year ){
-        if(month < 10) month = '0'+month;
-        return day+'.'+month+'.'+year
+    getDateToMonth(day, month, year) {
+        if (month < 10) month = '0' + month;
+        return day + '.' + month + '.' + year
     }
 
     spl(arr, size) {
         var result = [];
         var len = arr.length;
-        for (var i=0; i<len; i+=size) {
-            result.push(arr.slice(i,i+size));
+        for (var i = 0; i < len; i += size) {
+            result.push(arr.slice(i, i + size));
         }
         return result;
     }
@@ -240,11 +246,11 @@ class App extends Component {
         localStorage.clear();
     }
 
-    setEvent(){
+    setEvent() {
         //console.log(arguments)
         //debugger;
 
-        if ( arguments.length > 1 ){
+        if (arguments.length > 1) {
 
             const json = JSON.stringify({
                 title: arguments[1],
@@ -252,7 +258,13 @@ class App extends Component {
                 description: arguments[3],
             });
 
+
             localStorage.setItem(arguments[0], json);
+
+            this.setState({
+                window_full: false
+            });
+
 
         } else {
             if (arguments[0] === "") {
@@ -264,17 +276,16 @@ class App extends Component {
                 alert('Дата не валидна')
             } else {
                 let args = arguments[0].split('.');
-                let date = new Date(args[2], args[1]-1, args[0]);
+                let date = new Date(args[2], args[1] - 1, args[0]);
                 this.setState({
                     date: date,
-                    window: false
-                    //window_full: true
+                    window: false,
                 });
             }
         }
     }
 
-    render(){
+    render() {
 
         //debugger;
         let nowMonth = this.state.date.getMonth();
@@ -282,63 +293,55 @@ class App extends Component {
 
         const weeks = this.createCalendar(nowYear, nowMonth);
 
+
         return (
-                <div className = "header">
-                    {<Menu getWindow = {this.getWindow} setToUpdate = {this.setToUpdate} />}
-                    {this.state.window_full && <AddEventFull
-                        getWindow = {this.getWindow}
-                        setEvent = {this.setEvent}
-                        style = {this.state.modalStyle}
-                        windowState = {this.state.windowState}
-                        month = {nowMonth}
-                        day = {this.state.day}/>}
-                    <Transition
-                        toDay = {this.getToday}
-                        date = {this.state.date}
-                        month = {nowMonth}
-                        year = {nowYear}
-                        NextDate = {this.getNextDate}
-                        PreviousDate = {this.getPreviousDate}/>
-                   {/* <addWindowFullEvent getWindow = {this.getWindow}/>*/}
-                    {this.state.window && <AddEvent
-                        getWindow = {this.getWindow} setEvent = {this.setEvent}/>}
-                    <div className="calendar">
-                        <table>
-                            <tbody>
-                            {weeks.map((week, index) => {
-                                return (
-                                    <tr key={index}>
-                                        {week.map((day, index) => {
-                                            return <td key={index} onClick = {this.getWindow} className="test1">
-                                                        <div className="cell">
-                                                            <p className="clip">{day.day}</p>
-                                                            <p className="clip_title">{day.event.title || null}</p>
-                                                            <p className="clip_group">{day.event.group || null}</p>
-                                                        </div>
-                                                   </td>
-                                        })}
-                                    </tr>
-                                )
-                            })}
-                            </tbody>
-                        </table>
-                    </div>
+            <div className="header">
+                {<Menu getWindow={this.getWindow} setToUpdate={this.setToUpdate}/>}
+                {this.state.window_full && <AddEventFull
+                    getWindow={this.getWindow}
+                    setEvent={this.setEvent}
+                    style={this.state.modalStyle}
+                    windowState={this.state.windowState}
+                    month={nowMonth}
+                    day={this.state.day}/>}
+                <Transition
+                    toDay={this.getToday}
+                    date={this.state.date}
+                    month={nowMonth}
+                    year={nowYear}
+                    NextDate={this.getNextDate}
+                    PreviousDate={this.getPreviousDate}/>
+                {/* <addWindowFullEvent getWindow = {this.getWindow}/>*/}
+                {this.state.window && <AddEvent
+                    getWindow={this.getWindow} setEvent={this.setEvent}/>}
+                <div className="calendar">
+                    <table>
+                        <tbody>
+                        {weeks.map((week, index) => {
+                            return (
+                                <tr key={index}>
+                                    {week.map((day, index) => {
+                                        return <td key={index} onClick={(e) => this.getWindow(e, day.date)}
+                                                   className="test1">
+                                            <div className="cell">
+                                                <p className="clip">{day.day}</p>
+                                                <p className="clip_title">{day.event.title || null}</p>
+                                                <p className="clip_group">{day.event.group || null}</p>
+                                            </div>
+                                        </td>
+                                    })}
+                                </tr>
+                            )
+                        })}
+                        </tbody>
+                    </table>
                 </div>
-        )}
+            </div>
+        )
+    }
 }
 
 export default App;
-
-
-
-
-
-
-
-
-
-
-
 
 
 //Сева писал
