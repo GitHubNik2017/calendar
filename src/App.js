@@ -11,44 +11,28 @@ import Transition from './Transition'
 //App
 class App extends Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            window: false,
-            window_full: false,
-            date: new Date(),
-            windowState: null,
-            modalStyle: null,
-            day: null
+    state = {window: false, window_full: false,
+            date: new Date(), windowState: null, modalStyle: null,
+            day: null, searchString: '', searchDate: ''
         };
-        this.getWindow = this.getWindow.bind(this);
-        this.setToUpdate = this.setToUpdate.bind(this);
-        this.createCalendar = this.createCalendar.bind(this);
-        this.getPreviousDate = this.getPreviousDate.bind(this);
-        this.getNextDate = this.getNextDate.bind(this);
-        this.month = this.month.bind(this);
-        this.getToday = this.getToday.bind(this);
-        this.getDay = this.getDay.bind(this);
-        this.getLastDayOfMonth = this.getLastDayOfMonth.bind(this);
-        this.getDateToMonth = this.getDateToMonth.bind(this);
-        this.spl = this.spl.bind(this);
-        this.setEvent = this.setEvent.bind(this);
 
-    }
+    setEvent = this.setEvent.bind(this);
 
-    getWindow(e, date) {
+    getWindow = (e, date) => {
 
-        e.preventDefault();
-
-        debugger;
+        //debugger;
         if (e.currentTarget.className === 'block_button block_button_add' || e.currentTarget.className === 'button_close short') {
             this.setState({
-                window: !this.state.window, window_full: false
+                window: !this.state.window, window_full: false, searchString: ''
             })
-        } else if (e.currentTarget.className === 'test1' || e.currentTarget.className === 'button_close full') {
+        } else if (e.currentTarget.className === 'test1' || e.currentTarget.className === 'button_close full'
+            || e.currentTarget.className === 'table_data_border') {
             this.setState({
-                window_full: !this.state.window_full, window: false
+                window_full: !this.state.window_full, window: false, searchString: ''
+            })
+        } else if (e.currentTarget.className === 'search_input') {
+            this.setState({
+                window_full: false, window: false
             })
         }
 
@@ -107,99 +91,90 @@ class App extends Component {
         this.setState({day: date});
 
         //debugger
-    }
+    };
 
-    getNextDate(e) {
-        e.preventDefault();
-        this.setState({
-            date: this.month(1),
-            window_full: false
-        });
-    }
+    getNextDate = () => {
+        this.setState({date: this.getNewDate(1), window_full: false});
+    };
 
-    getPreviousDate(e) {
-        e.preventDefault();
-        this.setState({
-            date: this.month(0),
-            window_full: false
-        });
-    }
+    getPreviousDate = () => {
+        this.setState({date: this.getNewDate(0), window_full: false});
+    };
 
-    month(el) {
-        var D = this.state.date;
-        if (el === 1) {
-            D.setMonth(D.getMonth() + 1);
+    getNewDate = (flag) => {
+        var date = this.state.date;
+        let old_date = date.getDate();
+
+        if (flag) {
+            date.setMonth(date.getMonth() + 1);
         } else {
-            D.setMonth(D.getMonth() - 1);
+            date.setMonth(date.getMonth() - 1);
         }
-        return D
-    }
+        if (date.getDate() != old_date) {
+            date.setDate(0);
+        }
+        return date
+    };
 
-    getToday(e) {
+    getToday = () => {
         let date = new Date();
-        e.preventDefault();
-        this.setState({
-            date: date,
-            window_full: false
-        });
-    }
+        this.setState({date: date, window_full: false});
+    };
 
-    createCalendar(year, month) {
+    createCalendar = (year, month) => {
 
         const weeks = ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье'];
 
         const arr = [];
 
+        let date = new Date(year, month);
+        let last_day = this.getLastDayOfMonth(year, month);
+        let first_day = this.getDay(date);
 
-        let mon = month; // месяцы в JS идут от 0 до 11, а не от 1 до 12
-        let d = new Date(year, mon);
-        let d0 = this.getLastDayOfMonth(year, mon);
-
+        //debugger;
         // заполнить первый ряд от понедельника
         // и до дня, с которого начинается месяц
         // * * * | 1  2  3  4
-        let firstDay = this.getDay(d);
-
-        for (let i = 1; i <= firstDay; i++) {
-            let a = d0 - (firstDay - i);
+        for (let i = 1; i <= first_day; i++) {
+            let a = last_day - (first_day - i);
             //debugger;
             arr.push({
                 day: a,
-                date: this.getDateToMonth(a, mon, year),
-                event: JSON.parse(localStorage[this.getDateToMonth(a, mon, year)] || '{}'),
-                month: mon,
-                year: year
+                date: this.getDateToMonth(a, month, year),
+                event: JSON.parse(localStorage[this.getDateToMonth(a, month, year)] || '{}'),
+                month: month,
+                year: year,
+                flag: (this.getDateToMonth(a, month + 1, year) == this.state.searchDate) ? true : false
             })
         }
 
         // ячейки календаря с датами
-        while (d.getMonth() === mon) {
-            let b = d.getDate();
+        while (date.getMonth() === month) {
+            let b = date.getDate();
 
             arr.push({
                 day: b,
-                date: this.getDateToMonth(b, mon + 1, year),
-                event: JSON.parse(localStorage[this.getDateToMonth(b, mon + 1, year)] || '{}'),
-                month: mon + 1,
-                year: year
+                date: this.getDateToMonth(b, month + 1, year),
+                event: JSON.parse(localStorage[this.getDateToMonth(b, month + 1, year)] || '{}'),
+                month: month + 1,
+                year: year,
+                flag: (this.getDateToMonth(b, month + 1, year) == this.state.searchDate) ? true : false
             });
-            d.setDate(b + 1);
+            date.setDate(b + 1);
         }
 
         //debugger
-        //let test = 8 - this.getDay(d);
         let test = 43 - arr.length;
-        // добить таблицу пустыми ячейками, если нужно
-        if (this.getDay(d) !== 0 || arr.length !== 43) {
-            for (let i = 1; i < test; i++) {
-                let c = i;
 
+        if (this.getDay(date) !== 0 || arr.length !== 43) {
+            for (let i = 1; i < test; i++) {
                 arr.push({
-                    day: c,
-                    date: this.getDateToMonth(c, mon + 2, year),
-                    event: JSON.parse(localStorage[this.getDateToMonth(c, mon + 2, year)] || '{}'),
-                    month: mon + 2,
-                    year: year
+                    day: i,
+                    date: this.getDateToMonth(i, month + 2, year),
+                    event: JSON.parse(localStorage[this.getDateToMonth(i, month + 2, year)] || '{}'),
+                    month: month + 2,
+                    year: year,
+                    flag: (this.getDateToMonth(i, month + 1, year) == this.state.searchDate) ? true : false
                 })
             }
         }
@@ -214,48 +189,49 @@ class App extends Component {
         return result
 
 
-    }
+    };
 
-    getDateToMonth(day, month, year) {
+    getDateToMonth = (day, month, year) => {
         if (month < 10) month = '0' + month;
         return day + '.' + month + '.' + year
-    }
+    };
 
-    spl(arr, size) {
+    spl = (arr, size) => {
         var result = [];
         var len = arr.length;
         for (var i = 0; i < len; i += size) {
             result.push(arr.slice(i, i + size));
         }
         return result;
-    }
+    };
 
-    getDay(date) { // получить номер дня недели, от 0(пн) до 6(вс)
+    getDay = (date) => { // получить номер дня недели, от 0(пн) до 6(вс)
         let day = date.getDay();
         if (day === 0) day = 7;
         return day - 1;
-    }
+    };
 
-    getLastDayOfMonth(year, month) {
+    getLastDayOfMonth = (year, month) => {
         var date = new Date(year, month, 0);
         return date.getDate();
-    }
+    };
 
-    setToUpdate() {
+    setToUpdate = () => {
         alert('обновление');
         localStorage.clear();
-    }
+    };
 
-    setEvent() {
+    setEvent(e){
         //console.log(arguments)
-        //debugger;
 
-        if (arguments.length > 1) {
+        if (arguments.length > 2) {
 
-            const json = JSON.stringify({
+            let json = JSON.stringify({
+                date: arguments[0],
                 title: arguments[1],
                 group: arguments[2],
                 description: arguments[3],
+                currentDate: arguments[4],
             });
 
 
@@ -267,15 +243,15 @@ class App extends Component {
 
 
         } else {
-            if (arguments[0] === "") {
+            if (arguments[1] === "") {
 
                 alert("Введите дату")
 
             }
-            else if (new Date(arguments[0]) === 'Invalid Date') {
+            else if (new Date(arguments[1]) === 'Invalid Date') {
                 alert('Дата не валидна')
             } else {
-                let args = arguments[0].split('.');
+                let args = arguments[1].split('.');
                 let date = new Date(args[2], args[1] - 1, args[0]);
                 this.setState({
                     date: date,
@@ -283,20 +259,49 @@ class App extends Component {
                 });
             }
         }
-    }
+    };
+
+    showSearchForm = (e) => {
+        this.setState({searchString: e.target.value})
+    };
+
+    setSearchDate = (e) =>{
+        debugger;
+        let args = e.currentTarget.attributes.value.nodeValue.split('.');
+        let date = new Date(args[2], args[1] - 1, args[0]);
+        this.setState({searchDate: e.currentTarget.attributes.value.nodeValue, searchString: '', date: date});
+    };
 
     render() {
 
-        //debugger;
         let nowMonth = this.state.date.getMonth();
         let nowYear = this.state.date.getFullYear();
 
         const weeks = this.createCalendar(nowYear, nowMonth);
 
+        let searchString = this.state.searchString.trim().toLowerCase();
+
+
+        if (searchString.length > 0) {
+            console.log(searchString);
+
+            var libraries = [];
+            for (let elem in localStorage) {
+                libraries.push(JSON.parse(localStorage[elem]))
+            }
+            //debugger;
+            libraries = libraries.filter(function (l) {
+                return l.title.toLowerCase().match(searchString);
+            });
+        }
 
         return (
             <div className="header">
-                {<Menu getWindow={this.getWindow} setToUpdate={this.setToUpdate}/>}
+                {<Menu getWindow={this.getWindow} setToUpdate={this.setToUpdate}
+                       showSearchForm={this.showSearchForm}
+                       searchString={this.state.searchString}
+                       setSearchDate={this.setSearchDate}
+                       libraries={libraries}/>}
                 {this.state.window_full && <AddEventFull
                     getWindow={this.getWindow}
                     setEvent={this.setEvent}
@@ -322,7 +327,7 @@ class App extends Component {
                                 <tr key={index}>
                                     {week.map((day, index) => {
                                         return <td key={index} onClick={(e) => this.getWindow(e, day.date)}
-                                                   className="test1">
+                                                   className={(day.flag) ? 'table_data_border' : 'test1'}>
                                             <div className="cell">
                                                 <p className="clip">{day.day}</p>
                                                 <p className="clip_title">{day.event.title || null}</p>
@@ -342,36 +347,3 @@ class App extends Component {
 }
 
 export default App;
-
-
-//Сева писал
-/*
- class App extends Component {
- render(){
- return <Header msg="HeLLo NikiTA" foo="bar"/>
- }
- }
-
- class Header extends Component {
- constructor() {
- super();
-
- this.state = {
- msg: 'Hello World'
- }
- }
- capitalize(msg) {
- return msg[0].toUpperCase() + msg.slice(1).toLowerCase();
- }
-
- changePhrase() {
- this.setState({
- msg: 'LOL'
- });
- }
- render() {
- return <div className="container" onClick={() => this.changePhrase.call(this)}>{this.capitalize(this.state.msg)}!</div>
- }
- }
- export default App;
- */

@@ -201,7 +201,6 @@
   top: 123px;
   height: 1000px;
   width: 1160px;
-  /*border: 1px solid gainsboro;*/
   position: relative;
   z-index: -1;
   margin: 0 50px 50px 50px;
@@ -218,7 +217,6 @@ td,
 th {
   border: 1px solid lightgray;
   text-align: left;
-/*  valign: baseline;*/
 }
 
 th {
@@ -234,7 +232,6 @@ th {
 .clip {
     white-space: nowrap; /* Запрещаем перенос строк */
     overflow: hidden; /* Обрезаем все, что не помещается в область */
-    background: lightskyblue;
     padding: 5px; /* Поля вокруг текста */
     text-overflow: ellipsis; /* Добавляем многоточие */
 }
@@ -251,4 +248,35 @@ th {
     padding: 5px; /* Поля вокруг текста */
     text-overflow: ellipsis; /* Добавляем многоточие */
 }
+.table_data_border {
+    background-color: cyan;
+}
+/*----------------------------search_form---------------------------------*/
+.search_form {
+    position: absolute;
+    top: 41px;
+    left: 987px;
+    width: 220px;
+    height: 540px;
+    margin: 0 10px 0 20px;
+    border: solid 1px gainsboro;
+    background-color:white;
+}
 
+.triangle_search_form {
+    width: 20px;
+    height: 20px;
+    top: -11px;
+    left: 40px;
+    border-top: solid 1px  gainsboro;
+    border-left: solid 1px  gainsboro;
+    background-color:white;
+    position: absolute;
+    transform: rotate(45deg);
+}
+
+.block_search {
+    border-bottom: 1px solid lightgray;
+    padding: 5px;
+    margin: 5px;
+}

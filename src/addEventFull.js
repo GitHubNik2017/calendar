@@ -19,11 +19,9 @@ class AddEventFull extends Component {
             }
         }
 
-        this.writeEvent = this.writeEvent.bind(this);
-        this.clearForm = this.clearForm.bind(this)
     }
 
-    writeEvent(e) {
+    writeEvent = (e) => {
 
         if (e.currentTarget.className === 'input_event_full input_event_full_title') {
             this.setState({
@@ -39,23 +37,20 @@ class AddEventFull extends Component {
             })
         }
 
-    }
-    clearForm(){
-        this.setState({
-            title: '',
-            group: '',
-            description: ''
-        })
-    }
+    };
+
+    clearForm = () => {
+        this.setState({title: '', group: '', description: ''})
+    };
 
     render() {
 
-        let month = ["Января", "Февраля", "Марта", "Апреля", "Мая", "Июня",
+        const month = ["Января", "Февраля", "Марта", "Апреля", "Мая", "Июня",
             "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"];
 
         let currentDay = this.props.day.split('.')[0];
         let currentMonth = (this.props.day.split('.')[1].charAt(0) == 0) ? (this.props.day.split('.')[1].charAt(1) - 1) : (this.props.day.split('.')[1] - 1);
-
+        let currentDate = currentDay +' '+ month[currentMonth];
         //console.log(localStorage);
 
         return (
@@ -63,9 +58,9 @@ class AddEventFull extends Component {
                 <button onClick={this.props.getWindow} className="button_close full">х</button>
                 <button
                     className="add_button add_button_event_full"
-                    onClick={() => this.props.setEvent(this.props.day, this.state.title, this.state.group, this.state.description)}>Готово</button>
+                    onClick={() => this.props.setEvent(this.props.day, this.state.title, this.state.group, this.state.description, currentDate)}>Готово</button>
                 <button className="add_button add_button_remove_event" onClick={this.clearForm}>Удалить</button>
-                <div className="input_event_full input_event_full_date">{currentDay} {month[currentMonth]}</div>
+                <div className="input_event_full input_event_full_date">{currentDate}</div>
                 <input
                     className="input_event_full input_event_full_title"
                     placeholder="Событие"

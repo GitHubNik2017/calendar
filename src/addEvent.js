@@ -12,7 +12,7 @@ class AddEvent extends Component {
         <div className="short_window">
             <div className="triangle triangle_short"/>
             <button onClick = {this.props.getWindow} className="button_close short">х</button>
-            <button className="add_button add_button_event_short" onClick={()=>this.props.setEvent(this.input.value)}>Создать</button>
+            <button className="add_button add_button_event_short" onClick={(e)=>this.props.setEvent(e, this.input.value)}>Создать</button>
             <InputElement className="input_event_short"
                    ref={(input) => this.input = input}
                    placeholder="ДД.ММ.ГГГГ"
