@@ -13,7 +13,7 @@ class Menu extends Component {
                 <input className="search_input" placeholder="Событие, дата или участник"
                        onChange={(e) => this.props.showSearchForm(e)}
                        onClick={this.props.getWindow}/>
-                {this.props.searchString && <div className="search_form">
+                {this.props.searchString && <div className="search_form" >
                     <div className="triangle_search_form"/>
                     <div>
                         {this.props.libraries.map((l) => {

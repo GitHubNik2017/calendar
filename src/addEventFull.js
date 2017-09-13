@@ -49,7 +49,7 @@ class AddEventFull extends Component {
             "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"];
 
         let currentDay = this.props.day.split('.')[0];
-        let currentMonth = (this.props.day.split('.')[1].charAt(0) == 0) ? (this.props.day.split('.')[1].charAt(1) - 1) : (this.props.day.split('.')[1] - 1);
+        let currentMonth = (this.props.day.split('.')[1].charAt(0) === 0) ? (this.props.day.split('.')[1].charAt(1) - 1) : (this.props.day.split('.')[1] - 1);
         let currentDate = currentDay +' '+ month[currentMonth];
         //console.log(localStorage);
 

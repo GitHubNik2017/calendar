@@ -1,20 +1,19 @@
 import React, {Component} from 'react';
-import './App.css'
-//import './style.sass'
+import './css/App.css'
 
 import Menu from './Menu'
 import AddEvent from './addEvent'
-//import addWindowFullEvent from './addWindowFullEvent'
 import AddEventFull from './addEventFull'
 import Transition from './Transition'
 
 //App
 class App extends Component {
 
-    state = {window: false, window_full: false,
-            date: new Date(), windowState: null, modalStyle: null,
-            day: null, searchString: '', searchDate: ''
-        };
+    state = {
+        window: false, window_full: false,
+        date: new Date(), windowState: null, modalStyle: null,
+        day: null, searchString: '', searchDate: ''
+    };
 
     setEvent = this.setEvent.bind(this);
 
@@ -37,7 +36,7 @@ class App extends Component {
         }
 
 
-        if (!e.currentTarget.parentElement.nextSibling && e.currentTarget.cellIndex == 5) {
+        if (!e.currentTarget.parentElement.nextSibling && e.currentTarget.cellIndex === 5) {
             this.setState({
                 windowState: '--bottom_previous_right',
                 modalStyle: {
@@ -46,7 +45,7 @@ class App extends Component {
                     left: 46 + e.currentTarget.offsetLeft - (e.currentTarget.clientWidth * 2)
                 }
             })
-        } else if (!e.currentTarget.parentElement.nextSibling && e.currentTarget.cellIndex == 6) {
+        } else if (!e.currentTarget.parentElement.nextSibling && e.currentTarget.cellIndex === 6) {
             this.setState({
                 windowState: '--bottom_right',
                 modalStyle: {
@@ -110,7 +109,7 @@ class App extends Component {
         } else {
             date.setMonth(date.getMonth() - 1);
         }
-        if (date.getDate() != old_date) {
+        if (date.getDate() !== old_date) {
             date.setDate(0);
         }
         return date
@@ -131,24 +130,18 @@ class App extends Component {
         let last_day = this.getLastDayOfMonth(year, month);
         let first_day = this.getDay(date);
 
-        //debugger;
-        // заполнить первый ряд от понедельника
-        // и до дня, с которого начинается месяц
-        // * * * | 1  2  3  4
         for (let i = 1; i <= first_day; i++) {
             let a = last_day - (first_day - i);
-            //debugger;
             arr.push({
                 day: a,
                 date: this.getDateToMonth(a, month, year),
                 event: JSON.parse(localStorage[this.getDateToMonth(a, month, year)] || '{}'),
                 month: month,
                 year: year,
-                flag: (this.getDateToMonth(a, month + 1, year) == this.state.searchDate) ? true : false
+                flag: (this.getDateToMonth(a, month + 1, year) === this.state.searchDate) ? true : false
             })
         }
 
-        // ячейки календаря с датами
         while (date.getMonth() === month) {
             let b = date.getDate();
 
@@ -158,12 +151,11 @@ class App extends Component {
                 event: JSON.parse(localStorage[this.getDateToMonth(b, month + 1, year)] || '{}'),
                 month: month + 1,
                 year: year,
-                flag: (this.getDateToMonth(b, month + 1, year) == this.state.searchDate) ? true : false
+                flag: (this.getDateToMonth(b, month + 1, year) === this.state.searchDate) ? true : false
             });
             date.setDate(b + 1);
         }
 
-        //debugger
         let test = 43 - arr.length;
 
         if (this.getDay(date) !== 0 || arr.length !== 43) {
@@ -174,7 +166,7 @@ class App extends Component {
                     event: JSON.parse(localStorage[this.getDateToMonth(i, month + 2, year)] || '{}'),
                     month: month + 2,
                     year: year,
-                    flag: (this.getDateToMonth(i, month + 1, year) == this.state.searchDate) ? true : false
+                    flag: (this.getDateToMonth(i, month + 2, year) === this.state.searchDate) ? true : false
                 })
             }
         }
@@ -185,7 +177,6 @@ class App extends Component {
         for (var i = 0; i < result[0].length; i++) {
             result[0][i].day = weeks[i] + ', ' + result[0][i].day
         }
-        //console.log(result)
         return result
 
 
@@ -221,8 +212,7 @@ class App extends Component {
         localStorage.clear();
     };
 
-    setEvent(e){
-        //console.log(arguments)
+    setEvent(e) {
 
         if (arguments.length > 2) {
 
@@ -265,11 +255,20 @@ class App extends Component {
         this.setState({searchString: e.target.value})
     };
 
-    setSearchDate = (e) =>{
+    setSearchDate = (e) => {
         debugger;
         let args = e.currentTarget.attributes.value.nodeValue.split('.');
         let date = new Date(args[2], args[1] - 1, args[0]);
         this.setState({searchDate: e.currentTarget.attributes.value.nodeValue, searchString: '', date: date});
+
+    };
+
+    setBorderCell = () => {
+        setTimeout(() => {
+            debugger;
+            this.setState({searchDate: '', searchString: ''});
+        },1000);
+        return 'table_data_border';
     };
 
     render() {
@@ -283,7 +282,7 @@ class App extends Component {
 
 
         if (searchString.length > 0) {
-            console.log(searchString);
+            //console.log(searchString);
 
             var libraries = [];
             for (let elem in localStorage) {
@@ -316,7 +315,6 @@ class App extends Component {
                     year={nowYear}
                     NextDate={this.getNextDate}
                     PreviousDate={this.getPreviousDate}/>
-                {/* <addWindowFullEvent getWindow = {this.getWindow}/>*/}
                 {this.state.window && <AddEvent
                     getWindow={this.getWindow} setEvent={this.setEvent}/>}
                 <div className="calendar">
@@ -327,7 +325,7 @@ class App extends Component {
                                 <tr key={index}>
                                     {week.map((day, index) => {
                                         return <td key={index} onClick={(e) => this.getWindow(e, day.date)}
-                                                   className={(day.flag) ? 'table_data_border' : 'test1'}>
+                                                   className={(day.flag) ? this.setBorderCell(): 'test1'}>
                                             <div className="cell">
                                                 <p className="clip">{day.day}</p>
                                                 <p className="clip_title">{day.event.title || null}</p>
