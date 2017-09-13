@@ -136,7 +136,7 @@ class App extends Component {
                 event: JSON.parse(localStorage[this.getDateToMonth(a, month, year)] || '{}'),
                 month: month,
                 year: year,
-                flag: (this.getDateToMonth(a, month + 1, year) === this.state.searchDate) ? true : false
+                flag: (this.getDateToMonth(a, month + 1, year) === this.state.searchDate)
             })
         }
 
@@ -149,7 +149,7 @@ class App extends Component {
                 event: JSON.parse(localStorage[this.getDateToMonth(b, month + 1, year)] || '{}'),
                 month: month + 1,
                 year: year,
-                flag: (this.getDateToMonth(b, month + 1, year) === this.state.searchDate) ? true : false
+                flag: (this.getDateToMonth(b, month + 1, year) === this.state.searchDate)
             });
             date.setDate(b + 1);
         }
@@ -164,7 +164,7 @@ class App extends Component {
                     event: JSON.parse(localStorage[this.getDateToMonth(i, month + 2, year)] || '{}'),
                     month: month + 2,
                     year: year,
-                    flag: (this.getDateToMonth(i, month + 2, year) === this.state.searchDate) ? true : false
+                    flag: (this.getDateToMonth(i, month + 2, year) === this.state.searchDate)
                 })
             }
         }
