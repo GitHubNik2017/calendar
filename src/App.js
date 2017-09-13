@@ -15,8 +15,6 @@ class App extends Component {
         day: null, searchString: '', searchDate: ''
     };
 
-    setEvent = this.setEvent.bind(this);
-
     getWindow = (e, date) => {
 
         //debugger;
@@ -212,43 +210,44 @@ class App extends Component {
         localStorage.clear();
     };
 
-    setEvent(e) {
+    setEvent = (e, value) => {
 
-        if (arguments.length > 2) {
+        if (arguments[1] === "") {
 
-            let json = JSON.stringify({
-                date: arguments[0],
-                title: arguments[1],
-                group: arguments[2],
-                description: arguments[3],
-                currentDate: arguments[4],
-            });
+            alert("Введите дату")
 
-
-            localStorage.setItem(arguments[0], json);
-
-            this.setState({
-                window_full: false
-            });
-
-
-        } else {
-            if (arguments[1] === "") {
-
-                alert("Введите дату")
-
-            }
-            else if (new Date(arguments[1]) === 'Invalid Date') {
-                alert('Дата не валидна')
-            } else {
-                let args = arguments[1].split('.');
-                let date = new Date(args[2], args[1] - 1, args[0]);
-                this.setState({
-                    date: date,
-                    window: false,
-                });
-            }
         }
+        else if (new Date(arguments[1]) === 'Invalid Date') {
+            alert('Дата не валидна')
+        } else {
+            let args = value.split('.');
+            let date = new Date(args[2], args[1] - 1, args[0]);
+            this.setState({
+                date: date,
+                window: false,
+            });
+        }
+
+    };
+
+    setFullEvent = (day, title, group, description, currentDate) => {
+        debugger;
+        let json = JSON.stringify({
+            date: day,
+            title: title,
+            group: group,
+            description: description,
+            currentDate: currentDate,
+        });
+
+
+        localStorage.setItem(day, json);
+
+        this.setState({
+            window_full: false
+        });
+
+
     };
 
     showSearchForm = (e) => {
@@ -267,7 +266,7 @@ class App extends Component {
         setTimeout(() => {
             debugger;
             this.setState({searchDate: '', searchString: ''});
-        },1000);
+        }, 1000);
         return 'table_data_border';
     };
 
@@ -288,7 +287,6 @@ class App extends Component {
             for (let elem in localStorage) {
                 libraries.push(JSON.parse(localStorage[elem]))
             }
-            //debugger;
             libraries = libraries.filter(function (l) {
                 return l.title.toLowerCase().match(searchString);
             });
@@ -296,25 +294,26 @@ class App extends Component {
 
         return (
             <div className="header">
-                {<Menu getWindow={this.getWindow} setToUpdate={this.setToUpdate}
-                       showSearchForm={this.showSearchForm}
-                       searchString={this.state.searchString}
-                       setSearchDate={this.setSearchDate}
-                       libraries={libraries}/>}
+                <Menu getWindow={this.getWindow} setToUpdate={this.setToUpdate}
+                      showSearchForm={this.showSearchForm}
+                      searchString={this.state.searchString}
+                      setSearchDate={this.setSearchDate}
+                      libraries={libraries}/>
                 {this.state.window_full && <AddEventFull
                     getWindow={this.getWindow}
                     setEvent={this.setEvent}
+                    setFullEvent={this.setFullEvent}
                     style={this.state.modalStyle}
                     windowState={this.state.windowState}
                     month={nowMonth}
                     day={this.state.day}/>}
                 <Transition
-                    toDay={this.getToday}
+                    toDate={this.getToday}
                     date={this.state.date}
                     month={nowMonth}
                     year={nowYear}
-                    NextDate={this.getNextDate}
-                    PreviousDate={this.getPreviousDate}/>
+                    nextDate={this.getNextDate}
+                    prevDate={this.getPreviousDate}/>
                 {this.state.window && <AddEvent
                     getWindow={this.getWindow} setEvent={this.setEvent}/>}
                 <div className="calendar">
@@ -325,7 +324,7 @@ class App extends Component {
                                 <tr key={index}>
                                     {week.map((day, index) => {
                                         return <td key={index} onClick={(e) => this.getWindow(e, day.date)}
-                                                   className={(day.flag) ? this.setBorderCell(): 'test1'}>
+                                                   className={(day.flag) ? this.setBorderCell() : 'test1'}>
                                             <div className="cell">
                                                 <p className="clip">{day.day}</p>
                                                 <p className="clip_title">{day.event.title || null}</p>

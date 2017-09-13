@@ -4,15 +4,23 @@ import InputElement from 'react-input-mask';
 //addButton
 class AddEvent extends Component {
 
+    static propTypes = {
+        getWindow: React.PropTypes.func.isRequired,
+        setEvent: React.PropTypes.func.isRequired
+    };
+
     render() {
 
-        //console.log(this.props.aa)
+        const {
+            getWindow,
+            setEvent
+        } = this.props;
 
         return (
         <div className="short_window">
             <div className="triangle triangle_short"/>
-            <button onClick = {this.props.getWindow} className="button_close short">х</button>
-            <button className="add_button add_button_event_short" onClick={(e)=>this.props.setEvent(e, this.input.value)}>Создать</button>
+            <button onClick = {getWindow} className="button_close short">х</button>
+            <button className="add_button add_button_event_short" onClick={(e)=>setEvent(e, this.input.value)}>Создать</button>
             <InputElement className="input_event_short"
                    ref={(input) => this.input = input}
                    placeholder="ДД.ММ.ГГГГ"
