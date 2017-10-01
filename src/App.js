@@ -13,7 +13,6 @@ class App extends Component {
     date: new Date(), windowState: null, modalStyle: null,
     day: null, searchString: '', searchDate: '',
   };
-// test1
   getWindow = (e, date) => {
     // debugger;
     if (e.currentTarget.className === 'block_button block_button_add' ||
