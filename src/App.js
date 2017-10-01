@@ -13,7 +13,6 @@ class App extends Component {
     date: new Date(), windowState: null, modalStyle: null,
     day: null, searchString: '', searchDate: '',
   };
-
   getWindow = (e, date) => {
     // debugger;
     if (e.currentTarget.className === 'block_button block_button_add' ||
@@ -317,7 +316,7 @@ class App extends Component {
                       <p className="clip_group">{day.event.group || null}</p>
                     </div>
                   </td>;
-                })};
+                })}
                 </tr>);
             })}
             </tbody>
