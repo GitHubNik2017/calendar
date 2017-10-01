@@ -317,7 +317,7 @@ class App extends Component {
                       <p className="clip_group">{day.event.group || null}</p>
                     </div>
                   </td>;
-                })};
+                })}
                 </tr>);
             })}
             </tbody>
